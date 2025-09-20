@@ -24,5 +24,10 @@ namespace chees_eliza
         {
             InitializeComponent();
         }
+
+        private void SelectTile(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

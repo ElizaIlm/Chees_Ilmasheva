@@ -24,45 +24,6 @@ namespace chees_eliza
             InitializeComponent();
             init = this;
 
-            // Находим gameBoard из XAML
-            gameBoard = (Grid)FindName("gameBoard");
-
-            // Если не нашли через FindName, создаем доску программно
-            if (gameBoard == null)
-            {
-                gameBoard = new Grid();
-                gameBoard.Name = "gameBoard";
-                gameBoard.Background = Brushes.Beige;
-
-                // Создаем строки и столбцы
-                for (int i = 0; i < 8; i++)
-                {
-                    gameBoard.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                    gameBoard.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                }
-
-                // Создаем клетки доски
-                for (int i = 0; i < 8; i++)
-                {
-                    for (int j = 0; j < 8; j++)
-                    {
-                        Grid cell = new Grid();
-                        if ((i + j) % 2 == 0)
-                            cell.Background = Brushes.White;
-                        else
-                            cell.Background = Brushes.Gray;
-
-                        cell.MouseDown += SelectTile;
-                        Grid.SetRow(cell, i);
-                        Grid.SetColumn(cell, j);
-                        gameBoard.Children.Add(cell);
-                    }
-                }
-
-                // Добавляем gameBoard в основное окно
-                Content = new Grid { Children = { gameBoard } };
-            }
-
             // Создание пешек
             for (int i = 0; i <= 7; i++)
             {

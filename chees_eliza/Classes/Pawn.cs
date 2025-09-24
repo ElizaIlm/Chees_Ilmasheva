@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
+using System.Linq;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System;
 
 namespace chees_eliza.Classes
 {
@@ -25,27 +22,8 @@ namespace chees_eliza.Classes
 
         public void SelectFigure(object sender, MouseButtonEventArgs e)
         {
-            bool atack = false;
-
-            Pawn SelectPawn = MainWindow.init.Pawns.Find(X => X.Select == true);
-            if (SelectPawn != null)
-            {
-                if (Black && Y - 1 == SelectPawn.Y && (X == SelectPawn.X - 1 || X == SelectPawn.X + 1) ||
-                    !Black && Y + 1 == SelectPawn.Y && (X == SelectPawn.X - 1 || X == SelectPawn.X + 1))
-                {
-                    MainWindow.init.gameBoard.Children.Remove(Figure);
-                    Grid.SetColumn(SelectPawn.Figure, X);
-                    Grid.SetRow(SelectPawn.Figure, Y);
-
-                    SelectPawn.X = X;
-                    SelectPawn.Y = Y;
-
-                    SelectPawn.SelectFigure(null, null);
-                    return;
-                }
-            }
-
             MainWindow.init.OnSelect(this);
+
             if (Select)
             {
                 if (Black)
@@ -63,18 +41,57 @@ namespace chees_eliza.Classes
 
         public void Transform(int X, int Y)
         {
+            // Проверка горизонтали
             if (X != this.X)
             {
-                SelectFigure(null, null);
+                // Проверка атаки по диагонали
+                if ((Black && Y == this.Y - 1 && (X == this.X - 1 || X == this.X + 1)) ||
+                    (!Black && Y == this.Y + 1 && (X == this.X - 1 || X == this.X + 1)))
+                {
+                    // Удаление атакованной фигуры
+                    Pawn attackedPawn = MainWindow.init.Pawns.Find(p =>
+                        p.X == X && p.Y == Y && p.Black != this.Black);
+
+                    if (attackedPawn != null)
+                    {
+                        MainWindow.init.Pawns.Remove(attackedPawn);
+                        MainWindow.init.gameBoard.Children.Remove(attackedPawn.Figure);
+                    }
+
+                    // Перемещение пешки
+                    Grid.SetColumn(this.Figure, X);
+                    Grid.SetRow(this.Figure, Y);
+                    this.X = X;
+                    this.Y = Y;
+                    SelectFigure(null, null);
+                }
+                else
+                {
+                    SelectFigure(null, null);
+                }
                 return;
             }
-            if (Black && ((this.Y == 6 && this.Y - 2 == Y) || this.Y - 1 == Y) ||
-                !Black && ((this.Y == 1 && this.Y + 2 == Y) || this.Y + 1 == Y))
+
+            // Проверка хода вперед
+            if (Black)
             {
-                Grid.SetColumn(this.Figure, X);
-                Grid.SetRow(this.Figure, Y);
-                this.X = X;
-                this.Y = Y;
+                if ((this.Y == 6 && this.Y - 2 == Y) || this.Y - 1 == Y)
+                {
+                    Grid.SetColumn(this.Figure, X);
+                    Grid.SetRow(this.Figure, Y);
+                    this.X = X;
+                    this.Y = Y;
+                }
+            }
+            else
+            {
+                if ((this.Y == 1 && this.Y + 2 == Y) || this.Y + 1 == Y)
+                {
+                    Grid.SetColumn(this.Figure, X);
+                    Grid.SetRow(this.Figure, Y);
+                    this.X = X;
+                    this.Y = Y;
+                }
             }
             SelectFigure(null, null);
         }

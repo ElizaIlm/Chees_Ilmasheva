@@ -63,6 +63,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Classes\Bishop.cs" />
     <Compile Include="Classes\Pawn.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -96,7 +97,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Images\" />
+    <Resource Include="Images\Bishop %28black%29.png" />
+    <Resource Include="Images\Bishop %28select%29.png" />
+    <Resource Include="Images\Bishop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Pawn %28black%29.png" />
+    <Resource Include="Images\Pawn %28select%29.png" />
+    <Resource Include="Images\Pawn.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
